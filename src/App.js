@@ -182,16 +182,16 @@ function Hero() {
   }, []);
 
    // Typewriter
-useEffect(() => {
-  const ref = tiRef.current;
+  useEffect(() => { // eslint-disable-line react-hooks/exhaustive-deps
+  const t = tiRef.current; // ✅ capture once
 
   const tick = () => {
-    const word = TITLES[ref.idx];
+    const word = TITLES[t.idx];
 
-    if (!ref.del) {
-      const next = word.slice(0, ref.ch + 1);
+    if (!t.del) {
+      const next = word.slice(0, t.ch + 1);
       setTyped(next);
-      ref.ch += 1;
+      t.ch += 1;
 
       if (ref.ch === word.length) {
         ref.del = true;
