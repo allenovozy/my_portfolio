@@ -212,10 +212,11 @@ useEffect(() => {
     ref.t = setTimeout(tick, ref.del ? 40 : 80);
   };
 
-  ref.t = setTimeout(tick, 600);
+  t.t = setTimeout(tick, 600);
 
   return () => {
-    if (ref.t) clearTimeout(ref.t);
+    const timeoutId = t.t;
+    clearTimeout(timeoutId);
   };
 }, []);
    
