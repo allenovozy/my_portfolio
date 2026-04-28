@@ -183,7 +183,7 @@ function Hero() {
 
    // Typewriter
 useEffect(() => {
-  const ref = tiRef.current; // ✅ capture once
+  const ref = tiRef.current;
 
   const tick = () => {
     const word = TITLES[ref.idx];
@@ -191,7 +191,7 @@ useEffect(() => {
     if (!ref.del) {
       const next = word.slice(0, ref.ch + 1);
       setTyped(next);
-      ref.ch++;
+      ref.ch += 1;
 
       if (ref.ch === word.length) {
         ref.del = true;
@@ -201,7 +201,7 @@ useEffect(() => {
     } else {
       const next = word.slice(0, ref.ch - 1);
       setTyped(next);
-      ref.ch--;
+      ref.ch -= 1;
 
       if (ref.ch === 0) {
         ref.del = false;
@@ -215,10 +215,10 @@ useEffect(() => {
   ref.t = setTimeout(tick, 600);
 
   return () => {
-    if (ref.t) clearTimeout(ref.t); // ✅ safe cleanup
+    if (ref.t) clearTimeout(ref.t);
   };
 }, []);
-
+   
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1 }}>
       <main>
