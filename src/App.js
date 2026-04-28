@@ -159,126 +159,41 @@ function Navbar({ active }) {
   );
 }
 
-/* ═══════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════ */
-function Hero() {
-  const heroRef = useRef(null);
-  const [typed, setTyped] = useState('');
-  const tiRef = useRef({ idx: 0, ch: 0, del: false, t: null });
-  const TITLES = ['Software Engineer', 'IT Professional', 'API Developer', 'Systems Builder'];
-
-  // Parallax tilt
-  useEffect(() => {
-    const onMove = (e) => {
-      if (!heroRef.current) return;
-      const rx = ((e.clientY / window.innerHeight) - 0.5) * -4;
-      const ry = ((e.clientX / window.innerWidth) - 0.5) * 6;
-      heroRef.current.style.setProperty('--rx', rx + 'deg');
-      heroRef.current.style.setProperty('--ry', ry + 'deg');
-    };
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
-  }, []);
-
 useEffect(() => {
-  const ref = tiRef.current;
-
   const tick = () => {
-    const word = TITLES[ref.idx];
+    const state = tiRef.current;
+    const word = TITLES[state.idx];
 
-    if (!ref.del) {
-      const next = word.slice(0, ref.ch + 1);
-      setTyped(next);
-      ref.ch++;
+    if (!state.del) {
+      setTyped(word.slice(0, state.ch + 1));
+      state.ch++;
 
-      if (ref.ch === word.length) {
-        ref.del = true;
-        ref.t = setTimeout(tick, 2000);
+      if (state.ch === word.length) {
+        state.del = true;
+        state.t = setTimeout(tick, 2000);
         return;
       }
     } else {
-      const next = word.slice(0, ref.ch - 1);
-      setTyped(next);
-      ref.ch--;
+      setTyped(word.slice(0, state.ch - 1));
+      state.ch--;
 
-      if (ref.ch === 0) {
-        ref.del = false;
-        ref.idx = (ref.idx + 1) % TITLES.length;
+      if (state.ch === 0) {
+        state.del = false;
+        state.idx = (state.idx + 1) % TITLES.length;
       }
     }
 
-    ref.t = setTimeout(tick, ref.del ? 40 : 80);
+    state.t = setTimeout(tick, state.del ? 40 : 80);
   };
 
-  ref.t = setTimeout(tick, 600);
+  const start = setTimeout(tick, 600);
 
   return () => {
-    if (ref.t) clearTimeout(ref.t);
+    clearTimeout(start);
+    const state = tiRef.current;
+    if (state?.t) clearTimeout(state.t);
   };
 }, []);
-   
-  return (
-    <section id="home" style={{ position: 'relative', zIndex: 1 }}>
-      <main>
-        <div className="hero" ref={heroRef}>
-          <div className="hero__avatar">
-            <img src="/allen.jpg" alt="Allen Ovoderoye" />
-          </div>
-          <div className="hero__tag">
-            <span className="dot" />
-            <span>Available for new projects</span>
-          </div>
-
-          <div className="hero__name-wrap">
-            <h1 className="hero__name">
-              <span className="hero__first">ALLEN</span>
-              <span className="hero__last" data-text="OVODEROYE">OVODEROYE</span>
-            </h1>
-            <div className="hero__badge">
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--accent)' }}>
-                &gt;_ {typed}<span className="blink-cursor">|</span>
-              </span>
-            </div>
-          </div>
-
-          <p className="hero__bio">
-            Building secure, efficient systems and beautiful interfaces from{' '}
-            <span style={{ color: 'var(--text)' }}>Yenagoa, Nigeria.</span>{' '}
-            Specialising in backend APIs, biometric auth integrations, and WordPress platforms.
-          </p>
-
-          <div className="hero__cta">
-            <button className="btn btn--primary btn--large"
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>
-              View Projects →
-            </button>
-            <button className="btn btn--ghost btn--large"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-              Get in Touch
-            </button>
-          </div>
-
-          <div className="hero__stats">
-            {[{ n: '5+', l: 'Years Experience' }, { n: '10+', l: 'Projects Shipped' }, { n: '3', l: 'Languages Spoken' }].map(s => (
-              <div key={s.l}>
-                <span className="stat__num">{s.n}</span>
-                <span className="stat__label">{s.l}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="hero__scroll">
-            <span>Scroll</span>
-            <div className="hero__scroll-line" />
-          </div>
-        </div>
-      </main>
-      <style>{`.blink-cursor{animation:blink 1s step-end infinite} @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}`}</style>
-    </section>
-  );
-}
-
 /* ═══════════════════════════════════════════
    REVEAL HOOK
 ═══════════════════════════════════════════ */
