@@ -181,44 +181,42 @@ function Hero() {
     return () => window.removeEventListener('mousemove', onMove);
   }, []);
 
-  // Typewriter
-  useEffect(() => { // eslint-disable-line react-hooks/exhaustive-deps
-    const t = tiRef.current; // ✅ capture once
+useEffect(() => {
+  const ref = tiRef.current;
 
-    const tick = () => {
-      const word = TITLES[t.idx];
+  const tick = () => {
+    const word = TITLES[ref.idx];
 
-      if (!t.del) {
-        const next = word.slice(0, t.ch + 1);
-        setTyped(next);
-        t.ch += 1;
+    if (!ref.del) {
+      const next = word.slice(0, ref.ch + 1);
+      setTyped(next);
+      ref.ch++;
 
-        if (t.ch === word.length) {
-          t.del = true;
-          t.t = setTimeout(tick, 2000);
-          return;
-        }
-      } else {
-        const next = word.slice(0, t.ch - 1);
-        setTyped(next);
-        t.ch -= 1;
-
-        if (t.ch === 0) {
-          t.del = false;
-          t.idx = (t.idx + 1) % TITLES.length;
-        }
+      if (ref.ch === word.length) {
+        ref.del = true;
+        ref.t = setTimeout(tick, 2000);
+        return;
       }
+    } else {
+      const next = word.slice(0, ref.ch - 1);
+      setTyped(next);
+      ref.ch--;
 
-      t.t = setTimeout(tick, t.del ? 40 : 80);
-    };
+      if (ref.ch === 0) {
+        ref.del = false;
+        ref.idx = (ref.idx + 1) % TITLES.length;
+      }
+    }
 
-    t.t = setTimeout(tick, 600);
+    ref.t = setTimeout(tick, ref.del ? 40 : 80);
+  };
 
-    return () => {
-      const timeoutId = t.t;
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  ref.t = setTimeout(tick, 600);
+
+  return () => {
+    if (ref.t) clearTimeout(ref.t);
+  };
+}, []);
    
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1 }}>
