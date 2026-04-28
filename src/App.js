@@ -193,23 +193,23 @@ function Hero() {
       setTyped(next);
       t.ch += 1;
 
-      if (ref.ch === word.length) {
-        ref.del = true;
-        ref.t = setTimeout(tick, 2000);
+      if (t.ch === word.length) {
+        t.del = true;
+        t.t = setTimeout(tick, 2000);
         return;
       }
     } else {
-      const next = word.slice(0, ref.ch - 1);
+      const next = word.slice(0, t.ch - 1);
       setTyped(next);
-      ref.ch -= 1;
+      t.ch -= 1;
 
-      if (ref.ch === 0) {
-        ref.del = false;
-        ref.idx = (ref.idx + 1) % TITLES.length;
+      if (t.ch === 0) {
+        t.del = false;
+        t.idx = (t.idx + 1) % TITLES.length;
       }
     }
 
-    ref.t = setTimeout(tick, ref.del ? 40 : 80);
+    t.t = setTimeout(tick, t.del ? 40 : 80);
   };
 
   t.t = setTimeout(tick, 600);
