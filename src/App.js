@@ -181,27 +181,42 @@ function Hero() {
     return () => window.removeEventListener('mousemove', onMove);
   }, []);
 
-  // Typewriter
-  useEffect(() => {
-    const tick = () => {
-      const t = tiRef.current;
-      const word = TITLES[t.idx];
-      if (!t.del) {
-        const next = word.slice(0, t.ch + 1);
-        setTyped(next);
-        t.ch++;
-        if (t.ch === word.length) { t.del = true; t.t = setTimeout(tick, 2000); return; }
-      } else {
-        const next = word.slice(0, t.ch - 1);
-        setTyped(next);
-        t.ch--;
-        if (t.ch === 0) { t.del = false; t.idx = (t.idx + 1) % TITLES.length; }
+   // Typewriter
+useEffect(() => {
+  const t = tiRef.current; // ✅ capture once
+
+  const tick = () => {
+    const word = TITLES[t.idx];
+
+    if (!t.del) {
+      const next = word.slice(0, t.ch + 1);
+      setTyped(next);
+      t.ch++;
+
+      if (t.ch === word.length) {
+        t.del = true;
+        t.t = setTimeout(tick, 2000);
+        return;
       }
-      t.t = setTimeout(tick, t.del ? 40 : 80);
-    };
-    tiRef.current.t = setTimeout(tick, 600);
-    return () => clearTimeout(tiRef.current.t);
-  }, []); // eslint-disable-line
+    } else {
+      const next = word.slice(0, t.ch - 1);
+      setTyped(next);
+      t.ch--;
+
+      if (t.ch === 0) {
+        t.del = false;
+        t.idx = (t.idx + 1) % TITLES.length;
+      }
+    }
+
+    t.t = setTimeout(tick, t.del ? 40 : 80);
+  };
+
+  t.t = setTimeout(tick, 600);
+
+  return () => clearTimeout(t.t); // ✅ use captured ref
+}, []);
+
 
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1 }}>
