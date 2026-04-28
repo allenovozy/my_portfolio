@@ -183,40 +183,41 @@ function Hero() {
 
    // Typewriter
 useEffect(() => {
-  const t = tiRef.current; // ✅ capture once
+  const ref = tiRef.current; // ✅ capture once
 
   const tick = () => {
-    const word = TITLES[t.idx];
+    const word = TITLES[ref.idx];
 
-    if (!t.del) {
-      const next = word.slice(0, t.ch + 1);
+    if (!ref.del) {
+      const next = word.slice(0, ref.ch + 1);
       setTyped(next);
-      t.ch++;
+      ref.ch++;
 
-      if (t.ch === word.length) {
-        t.del = true;
-        t.t = setTimeout(tick, 2000);
+      if (ref.ch === word.length) {
+        ref.del = true;
+        ref.t = setTimeout(tick, 2000);
         return;
       }
     } else {
-      const next = word.slice(0, t.ch - 1);
+      const next = word.slice(0, ref.ch - 1);
       setTyped(next);
-      t.ch--;
+      ref.ch--;
 
-      if (t.ch === 0) {
-        t.del = false;
-        t.idx = (t.idx + 1) % TITLES.length;
+      if (ref.ch === 0) {
+        ref.del = false;
+        ref.idx = (ref.idx + 1) % TITLES.length;
       }
     }
 
-    t.t = setTimeout(tick, t.del ? 40 : 80);
+    ref.t = setTimeout(tick, ref.del ? 40 : 80);
   };
 
-  t.t = setTimeout(tick, 600);
+  ref.t = setTimeout(tick, 600);
 
-  return () => clearTimeout(t.t); // ✅ use captured ref
+  return () => {
+    if (ref.t) clearTimeout(ref.t); // ✅ safe cleanup
+  };
 }, []);
-
 
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1 }}>
