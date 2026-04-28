@@ -207,6 +207,9 @@ function Hero() {
     <section id="home" style={{ position: 'relative', zIndex: 1 }}>
       <main>
         <div className="hero" ref={heroRef}>
+          <div className="hero__avatar">
+            <img src="/allen.jpg" alt="Allen Ovoderoye" />
+          </div>
           <div className="hero__tag">
             <span className="dot" />
             <span>Available for new projects</span>
@@ -567,18 +570,19 @@ function Contact() {
             </p>
 
             <div className="contact__actions">
-              <a href="mailto:allenovo@example.com" className="btn btn--primary btn--large">
+              <a href="mailto:allenovoderoye009@gmail.com" className="btn btn--primary btn--large">
                 Send Email →
               </a>
-              <a href="https://linkedin.com/in/allenovo" target="_blank" rel="noreferrer" className="btn btn--ghost btn--large">
+              <a href="https://linkedin.com/in/ovoderoye-allen" target="_blank" rel="noreferrer" className="btn btn--ghost btn--large">
                 LinkedIn
               </a>
-              <a href="https://github.com/allenovo" target="_blank" rel="noreferrer" className="btn btn--ghost btn--large">
+              <a href="https://github.com/allenovozy" target="_blank" rel="noreferrer" className="btn btn--ghost btn--large">
                 GitHub
               </a>
             </div>
 
             <p className="contact__location">
+                  09068155804
               📍 Yenagoa, Bayelsa State, Nigeria
             </p>
           </div>
